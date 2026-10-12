@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     // Run variables
     [SerializeField] private float runSpeed = 5f;
 
+    // Grappling Hook
+    [SerializeField] private GrapplingHook grapple;
+
     public Animator animator;
 
     void Update()
@@ -34,7 +37,10 @@ public class PlayerController : MonoBehaviour
     // Running logic
     void Running()
     {
-        rb.linearVelocityX = runSpeed;
+        if (!grapple.isGrappling)
+        {
+            rb.linearVelocityX = runSpeed;
+        }
     }
 
     // Draws an invisible circle in the player's feet position to check if they're touching the ground
