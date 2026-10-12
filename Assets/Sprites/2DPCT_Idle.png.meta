@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3c61a69d4b3671a41ad7bab2668e3cbc
+guid: 5666d4dc166795a42beda443afd1a33d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1407169003511977290
-    second: 2DPCT_Idle1_NO_0
+      213: -5246278102683363679
+    second: 2DPCT_Idle_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
@@ -115,13 +115,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 2DPCT_Idle1_NO_0
+      name: 2DPCT_Idle_0
       rect:
         serializedVersion: 2
-        x: 3
+        x: 1
         y: 0
-        width: 10
-        height: 13
+        width: 14
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,8 +130,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ba6abe2f3bb87ce0800000000000000
-      internalID: -1407169003511977290
+      spriteID: 1a6d5a09cd97137b0800000000000000
+      internalID: -5246278102683363679
       vertices: []
       indices: 
       edges: []
@@ -150,7 +150,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      2DPCT_Idle1_NO_0: -1407169003511977290
+      2DPCT_Idle_0: -5246278102683363679
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

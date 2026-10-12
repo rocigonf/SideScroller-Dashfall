@@ -1,37 +1,72 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float torqueAmount = 1f;
-    InputAction moveAction;
-    Vector2 moveInput;
-    Rigidbody2D characterBody;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform feetPos;
+    [SerializeField] private float groundDistance = 0.25f;
+    [SerializeField] private float jumpTime = 0.3f; // Seconds you can hold down the jump button to perform a high jump
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        moveAction = InputSystem.actions.FindAction("Move");
-        characterBody = GetComponent<Rigidbody2D>();
-    }
+    private bool isGrounded = false;
+    private bool isJumping = false;
+    private float jumpTimer;
 
-    // Update is called once per frame
+    public Animator animator;
+
     void Update()
     {
-        PlayerTorque();
+        CheckGround();
+        Jumping();
+        UpdateAnimator();
     }
 
-    // Applies torque to the player based on the horizontal input from the Move action
-    void PlayerTorque()
+    // Draws an invisible circle in the player's feet position to check if they're touching the ground
+    void CheckGround()
     {
-        moveInput = moveAction.ReadValue<Vector2>();
-        if (moveInput.x < 0)
+        isGrounded = Physics2D.OverlapCircle(feetPos.position, groundDistance, groundLayer);
+    }
+
+    void Jumping()
+    {
+        // Jump logic
+        // Checks if player is on the ground AND presses jump button
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            characterBody.AddTorque(torqueAmount);
-        } 
-        else if (moveInput.x > 0)
-        {
-            characterBody.AddTorque(-torqueAmount);
+            // If true, rigid body's vertical speed is equivalent to jumpForce
+            isJumping = true;
+            rb.linearVelocity = Vector2.up * jumpForce;
         }
+
+        // High jump logic
+        // Checks if player is currently jumping AND holding down jump button
+        if (isJumping && Input.GetButton("Jump"))
+        {
+            // If the player has been jumping less time than the max jumpTime, the player keeps going up
+            if (jumpTimer < jumpTime)
+            {
+                rb.linearVelocity = Vector2.up * jumpForce;
+                jumpTimer += Time.deltaTime;
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
+
+        // Checks if player stops holding jump button
+        if (Input.GetButtonUp("Jump"))
+        {
+            isJumping = false;
+            jumpTimer = 0;
+        }
+    }
+
+    // Updates movement animations
+    void UpdateAnimator()
+    {
+        animator.SetFloat("yVelocity", rb.linearVelocity.y);
+        animator.SetBool("IsGrounded", isGrounded);
     }
 }
