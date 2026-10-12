@@ -3,15 +3,19 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float jumpForce = 10f;
     [SerializeField] private LayerMask groundLayer;
+
+    // Jump variables
+    [SerializeField] private float jumpForce = 10f;
     [SerializeField] private Transform feetPos;
     [SerializeField] private float groundDistance = 0.25f;
     [SerializeField] private float jumpTime = 0.3f; // Seconds you can hold down the jump button to perform a high jump
-
     private bool isGrounded = false;
     private bool isJumping = false;
     private float jumpTimer;
+
+    // Run variables
+    [SerializeField] private float runSpeed = 5f;
 
     public Animator animator;
 
@@ -20,6 +24,17 @@ public class PlayerController : MonoBehaviour
         CheckGround();
         Jumping();
         UpdateAnimator();
+    }
+
+    void FixedUpdate()
+    {
+        Running();
+    }
+
+    // Running logic
+    void Running()
+    {
+        rb.linearVelocityX = runSpeed;
     }
 
     // Draws an invisible circle in the player's feet position to check if they're touching the ground
@@ -36,7 +51,7 @@ public class PlayerController : MonoBehaviour
         {
             // If true, rigid body's vertical speed is equivalent to jumpForce
             isJumping = true;
-            rb.linearVelocity = Vector2.up * jumpForce;
+            rb.linearVelocityY = jumpForce;
         }
 
         // High jump logic
@@ -46,7 +61,7 @@ public class PlayerController : MonoBehaviour
             // If the player has been jumping less time than the max jumpTime, the player keeps going up
             if (jumpTimer < jumpTime)
             {
-                rb.linearVelocity = Vector2.up * jumpForce;
+                rb.linearVelocityY = jumpForce;
                 jumpTimer += Time.deltaTime;
             }
             else
@@ -66,7 +81,8 @@ public class PlayerController : MonoBehaviour
     // Updates movement animations
     void UpdateAnimator()
     {
-        animator.SetFloat("yVelocity", rb.linearVelocity.y);
+        animator.SetFloat("xVelocity", Mathf.Abs(rb.linearVelocityX));
+        animator.SetFloat("yVelocity", Mathf.Abs(rb.linearVelocity.y));
         animator.SetBool("IsGrounded", isGrounded);
     }
 }
