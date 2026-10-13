@@ -3867,7 +3867,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.06933072, g: 0.3584906, b: 0.08218408, a: 0}
+  m_BackGroundColor: {r: 0.31476384, g: 0.7646928, b: 0.9272728, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4140,6 +4140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   rb: {fileID: 809735550}
+  bc: {fileID: 809735553}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -4148,6 +4149,7 @@ MonoBehaviour:
   groundDistance: 0.25
   jumpTime: 0.3
   runSpeed: 8
+  slideCollider: 0.7
   grapple: {fileID: 809735557}
   animator: {fileID: 809735554}
 --- !u!50 &809735550
@@ -4449,7 +4451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrapplingHook
   grappleLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   isGrappling: 0
   maxGrappleDistance: 20
   reelSpeed: 10
@@ -4466,7 +4468,7 @@ GameObject:
   - component: {fileID: 1521941950}
   - component: {fileID: 1521941949}
   - component: {fileID: 1521941951}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Ceiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
