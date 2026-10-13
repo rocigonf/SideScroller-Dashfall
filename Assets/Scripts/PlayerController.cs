@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
     void UpdateAnimator()
     {
         animator.SetFloat("xVelocity", Mathf.Abs(rb.linearVelocityX));
-        animator.SetFloat("yVelocity", Mathf.Abs(rb.linearVelocity.y));
+        animator.SetFloat("yVelocity", rb.linearVelocity.y);
         animator.SetBool("IsGrounded", isGrounded);
     }
 }
