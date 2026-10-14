@@ -10,9 +10,9 @@ public class GrapplingHook : MonoBehaviour
     public bool isGrappling = false;
     Vector3 point;
 
-    [SerializeField] private float maxGrappleDistance = 8f;
-    [SerializeField] private float reelSpeed = 10f;
-    [SerializeField] private float minRopeLength = 1.5f;
+    [SerializeField] float maxGrappleDistance = 8f;
+    [SerializeField] float reelSpeed = 10f;
+    [SerializeField] float minRopeLength = 1.5f;
 
     void Start()
     {

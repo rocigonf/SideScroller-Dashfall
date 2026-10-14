@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class ParallaxLayer : MonoBehaviour
 {
-    [SerializeField] private Transform cam;
-    [SerializeField, Range(0f, 1f)] private float parallaxFactor = 0.5f;
+    [SerializeField] Transform cam;
+    [SerializeField, Range(0f, 1f)] float parallaxFactor = 0.5f;
 
-    private float startX;
-    private float camStartX;
-    private float width;
-    private float shift;
+    float startX;
+    float camStartX;
+    float width;
+    float shift;
 
-    private void Start()
+    void Start()
     {
         if (cam == null) cam = Camera.main.transform;
         startX = transform.position.x;
@@ -18,7 +18,7 @@ public class ParallaxLayer : MonoBehaviour
         width = GetComponentInChildren<SpriteRenderer>().bounds.size.x;
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
         float dx = cam.position.x - camStartX;
         float travelled = dx * (1 - parallaxFactor);
