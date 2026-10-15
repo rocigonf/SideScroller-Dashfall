@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Side Scroller.slnx"
+    "dotnet.defaultSolution": "Side-Scroller.slnx"
 }
