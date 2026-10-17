@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b035d6da031625419f13bf043be36d6, type: 3}
   m_Name: PowerUpDash
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpScriptableObject
-  powerUpType: Dash
-  powerUpValue: 100
-  timeLimit: 0.1
+  powerUpValue: 35
+  timeLimit: 0.175
+  type: 0

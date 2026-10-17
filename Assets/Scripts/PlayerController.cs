@@ -17,20 +17,28 @@ public class PlayerController : MonoBehaviour
     float jumpTimer;
 
     // Run variables
-    [SerializeField] float runSpeed = 5f;
+    [SerializeField] float runSpeed = 8f;
+    [SerializeField] float acceleration = 150f, deceleration = 50f;
+    float currentSpeed;
 
     // Grappling Hook
     [SerializeField] GrapplingHook grapple;
 
     // Power Ups
-    [SerializeField] float dashSpeed = 35f;
+    [SerializeField] float currentDashBonus = 0f;
     public bool IsDashing { get; private set; } = false;
+    float originalGravity;
 
     // Player Slide
     [SerializeField] PlayerSlide playerSlide;
 
     // Animator
     public Animator animator;
+
+    void Awake()
+    {
+        originalGravity = rb.gravityScale;
+    }
 
     void Update()
     {
@@ -50,7 +58,22 @@ public class PlayerController : MonoBehaviour
     {
         if (!grapple.isGrappling)
         {
-            rb.linearVelocityX = runSpeed;
+            float objectiveSpeed = runSpeed + currentDashBonus;
+            float rate;
+            if (objectiveSpeed > currentSpeed)
+            {
+                rate = acceleration;
+            }
+            else
+            {
+                rate = deceleration;
+            }
+            currentSpeed = Mathf.MoveTowards(currentSpeed, objectiveSpeed, rate * Time.fixedDeltaTime);
+            rb.linearVelocityX = currentSpeed;
+        }
+        else
+        {
+            rb.linearVelocityX = currentSpeed;
         }
     }
 
@@ -64,7 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         // Jump logic
         // Checks if player is on the ground AND presses jump button
-        if (IsGrounded && !playerSlide.IsSliding && Input.GetKeyDown(KeyCode.Space))
+        if (IsGrounded && !playerSlide.IsSliding && !IsDashing && Input.GetKeyDown(KeyCode.Space))
         {
             // If true, rigid body's vertical speed is equivalent to jumpForce
             IsJumping = true;
@@ -73,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
         // High jump logic
         // Checks if player is currently jumping AND holding down jump button
-        if (IsJumping && Input.GetKey(KeyCode.Space))
+        if (IsJumping && !IsDashing && Input.GetKey(KeyCode.Space))
         {
             // If the player has been jumping less time than the max jumpTime, the player keeps going up
             if (jumpTimer < jumpTime)
@@ -107,21 +130,27 @@ public class PlayerController : MonoBehaviour
 
     public void ApplyPowerUp(PowerUpScriptableObject powerUpData)
     {
-        if (powerUpData.PowerUpType == "Dash")
+        switch (powerUpData.type)
         {
-            runSpeed += powerUpData.PowerUpValue;
-            dashSpeed += powerUpData.PowerUpValue;
-            IsDashing = true;
+            case PowerUpType.Dash:
+                currentDashBonus = powerUpData.PowerUpValue;
+                rb.gravityScale = 0f;
+                rb.linearVelocityY = 0f;
+                IsJumping = false;
+                IsDashing = true;
+                break;
         }
     }
 
     public void DeactivatePowerUp(PowerUpScriptableObject powerUpData)
     {
-        if (powerUpData.PowerUpType == "Dash")
+        switch (powerUpData.type)
         {
-            runSpeed -= powerUpData.PowerUpValue;
-            dashSpeed -= powerUpData.PowerUpValue;
-            IsDashing = false;
+            case PowerUpType.Dash:
+                currentDashBonus = 0f;
+                rb.gravityScale = originalGravity;
+                IsDashing = false;
+                break;
         }
     }
 }

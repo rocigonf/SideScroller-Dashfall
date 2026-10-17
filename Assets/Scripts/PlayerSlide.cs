@@ -31,24 +31,18 @@ public class PlayerSlide : MonoBehaviour
     {
         bool canSlide = player.IsGrounded && !player.IsDashing && Input.GetKey(KeyCode.LeftShift);
 
-        if (canSlide && !IsSliding)
-            StartSlide();
+        if (canSlide && !IsSliding) 
+        {
+            IsSliding = true;
+            bc.size = slideSize;
+            bc.offset = slideOffset;
+        }
         else if (!canSlide && IsSliding && !HasCeiling())
-            EndSlide();
-    }
-
-    void StartSlide()
-    {
-        IsSliding = true;
-        bc.size = slideSize;
-        bc.offset = slideOffset;
-    }
-
-    void EndSlide()
-    {
-        IsSliding = false;
-        bc.size = originalSize;
-        bc.offset = originalOffset;
+        {
+            IsSliding = false;
+            bc.size = originalSize;
+            bc.offset = originalOffset;
+        }
     }
 
     // Calculates the box above the player's head used to detect an ceiling
