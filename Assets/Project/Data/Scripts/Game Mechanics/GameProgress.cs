@@ -9,8 +9,9 @@ public class GameProgress : MonoBehaviour
     [SerializeField] float fallLimitY = -30f;
     [SerializeField] float invulnerableTime = 1.5f;
 
-    // Puntos
-    [SerializeField] int pointsPerMeter = 100;
+    // Score
+    [SerializeField] int pointsPerMeter = 1;
+
 
     [SerializeField] Rigidbody2D rb;
     PlayerController player;
@@ -20,7 +21,7 @@ public class GameProgress : MonoBehaviour
     public bool IsGameOver;
 
     // Score points are the player's max distance multiplied by 100
-    public int Score => Mathf.FloorToInt(maxDistance) * pointsPerMeter;
+    public int Score => Mathf.FloorToInt(maxDistance) * pointsPerMeter * 100;
 
     void Awake()
     {

@@ -8,7 +8,6 @@ public class MovementFeedback : MonoBehaviour
     [SerializeField] TrailRenderer dashTrail;
     [SerializeField] TrailRenderer grappleTrail;
     [SerializeField] CinemachineCamera cinemachineCamera;
-
     [SerializeField] float zoomOutAmount = 1f;
     [SerializeField] float zoomOutSpeed = 8f;
     [SerializeField] float zoomReturnSpeed = 3f;
@@ -29,7 +28,6 @@ public class MovementFeedback : MonoBehaviour
     {
         UpdateZoom();
     }
-
 
     void Update()
     {
