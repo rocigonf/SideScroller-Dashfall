@@ -51,7 +51,7 @@ public class GrapplingHook : MonoBehaviour
             {
                 rb.linearVelocity *= 1.5f;
             }
-                
+
             isGrappling = false;
             lr.enabled = false;
             dj.enabled = false;
@@ -71,5 +71,12 @@ public class GrapplingHook : MonoBehaviour
         {
             dj.distance -= reelSpeed * Time.fixedDeltaTime;
         }
+    }
+
+    public void ReleaseGrapple()
+    {
+        isGrappling = false;
+        lr.enabled = false;
+        dj.enabled = false;
     }
 }

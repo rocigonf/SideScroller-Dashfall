@@ -31,7 +31,7 @@ public class PlayerSlide : MonoBehaviour
     {
         bool canSlide = player.IsGrounded && !player.IsDashing && Input.GetKey(KeyCode.LeftShift);
 
-        if (canSlide && !IsSliding) 
+        if (canSlide && !IsSliding)
         {
             IsSliding = true;
             bc.size = slideSize;
@@ -58,6 +58,13 @@ public class PlayerSlide : MonoBehaviour
     {
         GetCeilingCheckBox(out Vector2 center, out Vector2 size);
         return Physics2D.OverlapBox(center, size, 0f, obstacleLayer) != null;
+    }
+
+    public void ResetSlide()
+    {
+        IsSliding = false;
+        bc.size = originalSize;
+        bc.offset = originalOffset;
     }
 
     void OnDrawGizmosSelected()

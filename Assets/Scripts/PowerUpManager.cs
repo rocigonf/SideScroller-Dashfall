@@ -3,12 +3,17 @@ using UnityEngine;
 public class PowerUpManager : MonoBehaviour
 {
     [SerializeField] PowerUpScriptableObject powerUpData;
+    [SerializeField] float respawnDelay = 2f;
     PlayerController playerController;
     SpriteRenderer powerUpSpriteRenderer;
     Collider2D powerUpCollider;
 
     float timeLeft;
     bool isActive;
+
+    float respawnTimer;
+    bool isWaitingToRespawn;
+
 
     void Start()
     {
@@ -19,6 +24,18 @@ public class PowerUpManager : MonoBehaviour
 
     void Update()
     {
+        if (isWaitingToRespawn)
+        {
+            respawnTimer -= Time.deltaTime;
+            if (respawnTimer <= 0f)
+            {
+                isWaitingToRespawn = false;
+                powerUpSpriteRenderer.enabled = true;
+                powerUpCollider.enabled = true;
+            }
+            return;
+        }
+
         if (!isActive) return;
 
         timeLeft -= Time.deltaTime;
@@ -27,6 +44,7 @@ public class PowerUpManager : MonoBehaviour
             playerController.DeactivatePowerUp(powerUpData);
             Destroy(gameObject);
         }
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -42,4 +60,16 @@ public class PowerUpManager : MonoBehaviour
 
         playerController.ApplyPowerUp(powerUpData);
     }
+
+    public void CancelIfActive()
+    {
+        if (!isActive) return;
+
+        isActive = false;
+        playerController.DeactivatePowerUp(powerUpData);
+
+        respawnTimer = respawnDelay;
+        isWaitingToRespawn = true;
+    }
+
 }

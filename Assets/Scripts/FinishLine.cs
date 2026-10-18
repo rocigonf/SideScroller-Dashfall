@@ -9,12 +9,17 @@ public class FinishLine : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Finish line");
-            Invoke(nameof(ReloadScene), reloadDelay);
+            Invoke(nameof(NextLevel), reloadDelay);
         }
     }
 
-    void ReloadScene()
+    void NextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        int current = int.Parse(SceneManager.GetActiveScene().name.Replace("Level", ""));   // "Level2" -> 2
+        int unlocked = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        PlayerPrefs.SetInt("UnlockedLevel", Mathf.Max(unlocked, Mathf.Min(current + 1, 3)));
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene(current >= 3 ? "MainMenu" : $"Level{current + 1}");
     }
 }

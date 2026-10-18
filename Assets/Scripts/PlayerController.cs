@@ -153,4 +153,18 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+
+    // Resets player state when respawning
+    public void ResetState()
+    {
+        currentSpeed = runSpeed;
+        currentDashBonus = 0f;
+        IsDashing = false;
+        IsJumping = false;
+        jumpTimer = 0f;
+        rb.gravityScale = originalGravity;
+        grapple.ReleaseGrapple();
+        playerSlide.ResetSlide();
+        rb.linearVelocity = Vector2.zero;
+    }
 }
