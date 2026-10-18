@@ -7,7 +7,7 @@ public class GrapplingHook : MonoBehaviour
     DistanceJoint2D dj;
     public LayerMask grappleLayer;
 
-    public bool isGrappling = false;
+    public bool IsGrappling = false;
     Vector3 point;
 
     [SerializeField] float maxGrappleDistance = 8f;
@@ -34,30 +34,30 @@ public class GrapplingHook : MonoBehaviour
             float dist = Vector2.Distance(transform.position, point);
 
             bool hit = Physics2D.OverlapCircle(point, 0.1f, grappleLayer);
-            Debug.Log($"dist: {dist}, max: {maxGrappleDistance}, hit: {hit}");
+            //Debug.Log($"dist: {dist}, max: {maxGrappleDistance}, hit: {hit}");
             if (dist <= maxGrappleDistance && hit)
             {
-                isGrappling = true;
+                IsGrappling = true;
                 dj.connectedAnchor = point;
                 dj.distance = dist;
                 dj.enabled = true;
-                Debug.Log("Im grapplin it");
+                //Debug.Log("Im grapplin it");
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (isGrappling)
+            if (IsGrappling)
             {
                 rb.linearVelocity *= 1.5f;
             }
 
-            isGrappling = false;
+            IsGrappling = false;
             lr.enabled = false;
             dj.enabled = false;
         }
 
-        if (isGrappling)
+        if (IsGrappling)
         {
             lr.enabled = true;
             lr.SetPosition(0, transform.position);
@@ -67,7 +67,7 @@ public class GrapplingHook : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isGrappling && dj.distance > minRopeLength)
+        if (IsGrappling && dj.distance > minRopeLength)
         {
             dj.distance -= reelSpeed * Time.fixedDeltaTime;
         }
@@ -75,7 +75,7 @@ public class GrapplingHook : MonoBehaviour
 
     public void ReleaseGrapple()
     {
-        isGrappling = false;
+        IsGrappling = false;
         lr.enabled = false;
         dj.enabled = false;
     }

@@ -4,17 +4,17 @@ using UnityEngine.SceneManagement;
 
 public class InterfaceManager : MonoBehaviour
 {
+    [SerializeField] MenuManager menuManager;
     [SerializeField] GameProgress progress;
 
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text livesText;
-    [SerializeField] TMP_Text highScoreText;
 
     // Game over
     [SerializeField] GameObject gameOverPanel;
     [SerializeField] TMP_Text finalScoreText;
 
-    int lastScore = -1, lastLives = -1, lastHigh = -1;
+    int lastScore = -1, lastLives = -1;
 
     void Awake()
     {
@@ -38,12 +38,6 @@ public class InterfaceManager : MonoBehaviour
         {
             lastLives = progress.lives;
             if (livesText) livesText.text = $"Lives: {lastLives}";
-        }
-
-        if (progress.highScore != lastHigh)
-        {
-            lastHigh = progress.highScore;
-            if (highScoreText) highScoreText.text = $"High Score: {lastHigh}";
         }
 
         if (gameOverPanel && gameOverPanel.activeSelf != progress.IsGameOver)

@@ -42,7 +42,7 @@ public class PowerUpManager : MonoBehaviour
         if (timeLeft <= 0f)
         {
             playerController.DeactivatePowerUp(powerUpData);
-            Destroy(gameObject);
+            isActive = false;
         }
 
     }
@@ -72,4 +72,13 @@ public class PowerUpManager : MonoBehaviour
         isWaitingToRespawn = true;
     }
 
+    public void ResetPowerUp()
+    {
+        if (isActive) playerController.DeactivatePowerUp(powerUpData);
+
+        isActive = false;
+        isWaitingToRespawn = false;
+        powerUpSpriteRenderer.enabled = true;
+        powerUpCollider.enabled = true;
+    }
 }

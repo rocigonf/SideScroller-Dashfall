@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,8 +8,6 @@ public class PlayerController : MonoBehaviour
 
     // Jump variables
     [SerializeField] float jumpForce = 10f;
-    [SerializeField] Transform feetPos;
-    [SerializeField] float groundDistance = 0.25f;
     [SerializeField] float jumpTime = 0.3f; // Seconds you can hold down the jump button to perform a high jump
     public bool IsGrounded { get; private set; } = false;
     public bool IsJumping { get; private set; } = false;
@@ -56,36 +53,49 @@ public class PlayerController : MonoBehaviour
     // Running logic
     void Running()
     {
-        if (!grapple.isGrappling)
+        if (grapple.IsGrappling)
         {
-            float objectiveSpeed = runSpeed + currentDashBonus;
-            float rate;
-            if (objectiveSpeed > currentSpeed)
-            {
-                rate = acceleration;
-            }
-            else
-            {
-                rate = deceleration;
-            }
-            currentSpeed = Mathf.MoveTowards(currentSpeed, objectiveSpeed, rate * Time.fixedDeltaTime);
-            rb.linearVelocityX = currentSpeed;
+            currentSpeed = rb.linearVelocityX;
+            return;
+        }
+
+        float objectiveSpeed = runSpeed + currentDashBonus;
+        float rate;
+
+        if (objectiveSpeed > currentSpeed)
+        {
+            rate = acceleration;
         }
         else
         {
-            rb.linearVelocityX = currentSpeed;
+            rate = deceleration;
         }
+
+        currentSpeed = Mathf.MoveTowards(currentSpeed, objectiveSpeed, rate * Time.fixedDeltaTime);
+        rb.linearVelocityX = currentSpeed;
     }
 
-    // Draws an invisible circle in the player's feet position to check if they're touching the ground
+    // Checks for ground with a box under the collider's full width (works on slopes)
     void CheckGround()
     {
-        IsGrounded = Physics2D.OverlapCircle(feetPos.position, groundDistance, groundLayer);
+        Bounds b = bc.bounds;
+        Vector2 center = new Vector2(b.center.x, b.min.y - 0.05f);
+        Vector2 size = new Vector2(b.size.x * 0.95f, 0.15f);
+        IsGrounded = Physics2D.OverlapBox(center, size, 0f, groundLayer);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (bc == null) return;
+        Bounds b = bc.bounds;
+        Gizmos.color = IsGrounded ? Color.green : Color.red;
+        Gizmos.DrawWireCube(
+            new Vector3(b.center.x, b.min.y - 0.05f),
+            new Vector3(b.size.x * 0.95f, 0.15f));
     }
 
     void Jumping()
     {
-        // Jump logic
         // Checks if player is on the ground AND presses jump button
         if (IsGrounded && !playerSlide.IsSliding && !IsDashing && Input.GetKeyDown(KeyCode.Space))
         {
@@ -94,7 +104,6 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocityY = jumpForce;
         }
 
-        // High jump logic
         // Checks if player is currently jumping AND holding down jump button
         if (IsJumping && !IsDashing && Input.GetKey(KeyCode.Space))
         {

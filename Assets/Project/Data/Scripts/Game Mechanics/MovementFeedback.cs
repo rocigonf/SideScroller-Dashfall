@@ -1,10 +1,12 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class DashFeedback : MonoBehaviour
+public class MovementFeedback : MonoBehaviour
 {
     [SerializeField] PlayerController player;
-    [SerializeField] TrailRenderer trail;
+    [SerializeField] GrapplingHook grapple;
+    [SerializeField] TrailRenderer dashTrail;
+    [SerializeField] TrailRenderer grappleTrail;
     [SerializeField] CinemachineCamera cinemachineCamera;
 
     [SerializeField] float zoomOutAmount = 1f;
@@ -13,10 +15,12 @@ public class DashFeedback : MonoBehaviour
 
     float originalLensSize, targetLensSize;
     bool wasDashing = false;
+    bool wasGrappling = false;
 
     void Awake()
     {
-        trail.emitting = false;
+        dashTrail.emitting = false;
+        grappleTrail.emitting = false;
         originalLensSize = cinemachineCamera.Lens.OrthographicSize;
         targetLensSize = originalLensSize;
     }
@@ -29,31 +33,32 @@ public class DashFeedback : MonoBehaviour
 
     void Update()
     {
-        if (player.IsDashing && !wasDashing)
+        if (player.IsDashing != wasDashing)
         {
-            OnDashStart();
+            OnConfigureDash(player.IsDashing, player.IsDashing ? originalLensSize + zoomOutAmount : originalLensSize);
         }
-        else if (!player.IsDashing && wasDashing)
+
+        if (grapple.IsGrappling != wasGrappling)
         {
-            OnDashEnd();
+            OnConfigureGrapple(grapple.IsGrappling, grapple.IsGrappling ? originalLensSize + zoomOutAmount : originalLensSize);
         }
     }
 
-    void OnDashStart()
+    void OnConfigureDash(bool activated, float size)
     {
-        wasDashing = true;
-        trail.emitting = true;
-        targetLensSize = originalLensSize + zoomOutAmount;
+        wasDashing = activated;
+        dashTrail.emitting = activated;
+        targetLensSize = size;
     }
 
-    void OnDashEnd()
+    void OnConfigureGrapple(bool activated, float size)
     {
-        wasDashing = false;
-        trail.emitting = false;
-        targetLensSize = originalLensSize;
+        wasGrappling = activated;
+        grappleTrail.emitting = activated;
+        targetLensSize = size;
     }
 
-    // Zooms out and in the camera when dashing for a speeding effect
+    // Zooms out and in the camera when dashing or grappling for a speeding effect
     void UpdateZoom()
     {
         var lens = cinemachineCamera.Lens;

@@ -11,7 +11,7 @@ public class MenuManager : MonoBehaviour
     public void GoToLevel(int level)
     {
         SceneManager.LoadScene($"Level{level}");
-        Debug.Log($"Going to level {level}");
+        //Debug.Log($"Going to level {level}");
     }
 
     public void GoToCredits()
@@ -27,6 +27,6 @@ public class MenuManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
-        Debug.Log("Game is closing");
+        //Debug.Log("Game is closing");
     }
 }
